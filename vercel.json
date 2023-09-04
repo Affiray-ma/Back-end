@@ -1,15 +1,10 @@
 {
     "version": 2,
+    "scripts":{
+        "prebuild": "npm install;npx prisma generate;echo 'hello world'"
+    },
     "builds": [
         {
-
-
-            "config": {
-                "includeFiles": "src/**"
-            },
-
-            "postbuild": "prisma generate;npm install, npm run build",
-
             "src": "src/main.ts",
             "use": "@vercel/node"
         }
