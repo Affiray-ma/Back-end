@@ -1,0 +1,126 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgres://postgres:postgres@localhost:1312/afirayDB"
+
+  // other options are:
+  // * sqlite (https://pris.ly/d/help/databases/sqlite)
+  // * mysql (https://pris.ly/d/help/databases/mysql)
+  // * sqlserver (https://pris.ly/d/help/databases/mssql)
+}
+
+model User {
+  id             String      @id @default(uuid())
+  email          String      @unique
+  name           String
+  password       String
+  is_blacklisted Boolean     @default(false)
+  phone          String      @unique @default("")
+  birth_date     String      @default("")
+  customer_rank  Int         @default(0)
+  login_status   Boolean     @default(false)
+  role           Roles?      @relation(fields: [role_id], references: [id])
+  role_id        String?
+  team           Team?       @relation(fields: [team_id], references: [id])
+  team_id        String?
+  userconfig     Userconfig? @relation(fields: [userconfig_id], references: [id], onDelete: Cascade)
+  userconfig_id  String?     @unique
+  location       Location?   @relation(fields: [location_id], references: [id])
+  location_id    String?     @unique
+  thumb          Thumb?      @relation(fields: [thumb_id], references: [id])
+  thumb_id       String?     @unique
+  search         Search[]    @relation()
+  created_at     DateTime    @default(now())
+  updated_at     DateTime    @default(now()) @updatedAt
+}
+
+model Userconfig {
+  id          String   @id @default(uuid())
+  user        User?    @relation()
+  currency    Currency @relation(fields: [currency_id], references: [id])
+  currency_id String   @unique
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
+
+model Currency {
+  id          String       @id @default(uuid())
+  name        String
+  description String
+  userconfig  Userconfig[] @relation()
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+}
+
+model Roles {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  user        User[]   @relation()
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
+
+model Team {
+  id          String      @id @default(uuid())
+  name        String
+  description String
+  members     User[]      @relation()
+  Warehouse   Warehouse[] @relation()
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+}
+
+model Warehouse {
+  id          String   @id @default(uuid())
+  name        String
+  team        Team     @relation(fields: [team_id], references: [id])
+  team_id     String   @unique
+  location    Location @relation(fields: [location_id], references: [id])
+  location_id String   @unique
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
+
+model Location {
+  id          String     @id @default(uuid())
+  name        String
+  description String
+  warehouse   Warehouse? @relation()
+  user        User?      @relation()
+  address1    String
+  address2    String     @default("")
+  city        String
+  state       String
+  latitude    String     @default("0")
+  longitude   String     @default("0")
+  country     String
+  zip_code    String
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
+}
+
+model Thumb {
+  id               String   @id @default(uuid())
+  origin_size      String
+  extra_large_size String
+  large_size       String
+  medium_size      String
+  small_size       String
+  user             User?    @relation()
+  created_at       DateTime @default(now())
+}
+
+model Search {
+  id         String   @id @default(uuid())
+  query      String
+  user       User?    @relation(fields: [user_id], references: [id])
+  user_id    String   @unique
+  created_at DateTime @default(now())
+}
