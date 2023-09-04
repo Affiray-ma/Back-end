@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgres://postgres:postgres@localhost:1312/afirayDB"
+  url      = "postgres://otiza:Fru3Zgh8HckA@ep-shy-shadow-77624271.eu-central-1.aws.neon.tech/AFIRAYDEV"
 
   // other options are:
   // * sqlite (https://pris.ly/d/help/databases/sqlite)
