@@ -1,8 +1,6 @@
 {
     "version": 2,
-    "scripts":{
-        "prebuild": "npm install;npx prisma generate;echo 'hello world'"
-    },
+    "buildCommand": "npm install -g @nestjs/cli;npm run build,npx prisma generate;echo 'hello world'",
     "builds": [
         {
             "src": "src/main.ts",
