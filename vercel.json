@@ -2,6 +2,14 @@
     "version": 2,
     "builds": [
         {
+
+
+            "config": {
+                "includeFiles": "src/**"
+            },
+
+            "postbuild": "prisma generate;npm install, npm run build",
+
             "src": "src/main.ts",
             "use": "@vercel/node"
         }
