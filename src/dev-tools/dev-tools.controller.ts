@@ -45,9 +45,9 @@ export class DevToolsController {
     return result;
   }
   @Get("image")
-  async getImage(@Body() body: any,@Res() res: any) {
+  async getImage(@Body() body: any,@Param('key') key,@Res() res: any) {
 
-    const result = await this.s3Service.getFile(body.key);
+    const result = await this.s3Service.getFile(key);
     //transform the image to binary and send it with content type image/png
     // res.writeHead(200, {
     //   'Content-Type': 'octet-stream',
