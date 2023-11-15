@@ -33,8 +33,8 @@ model User {
   userconfig_id  String?     @unique
   location       Location?   @relation(fields: [location_id], references: [id])
   location_id    String?     @unique
-  image    Thumbnails?  @relation(fields: [image_id], references: [id])
-  image_id String  @unique
+  image          Thumbnails? @relation(fields: [image_id], references: [id])
+  image_id       String      @unique
   search         Search[]    @relation()
   created_at     DateTime    @default(now())
   updated_at     DateTime    @default(now()) @updatedAt
@@ -78,17 +78,16 @@ model Team {
 }
 
 model Warehouse {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   name        String
-  team        Team     @relation(fields: [team_id], references: [id])
-  team_id     String   @unique
-  location    Location @relation(fields: [location_id], references: [id])
-  location_id String   @unique
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  team        Team      @relation(fields: [team_id], references: [id])
+  team_id     String    @unique
+  location    Location  @relation(fields: [location_id], references: [id])
+  location_id String    @unique
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
   Products    Product[]
 }
-
 
 model Location {
   id          String     @id @default(uuid())
@@ -108,8 +107,6 @@ model Location {
   updated_at  DateTime   @updatedAt
 }
 
-
-
 model Search {
   id         String   @id @default(uuid())
   query      String
@@ -117,81 +114,90 @@ model Search {
   user_id    String   @unique
   created_at DateTime @default(now())
 }
-model Thumbnails{
-  id        String   @id @default(uuid())
-  dest      String   @default("")
-  product   Product? @relation(fields: [product_id], references: [id])
-  product_id String   @unique
-  
-  created_at DateTime @default(now())
-  Machine_Part Machine_Part?
-  Maker  Maker?
-  Machine Machine?
-  User User?
-}
-model Product{
-  id        String   @id @default(uuid())
-  name      String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  price     Float    @default(0)
-  thumbs     Thumbnails[]
-  reference Reference @relation(fields: [reference_id], references: [id])
-  reference_id String
-  warehouse Warehouse @relation(fields: [warehouse_id], references: [id])
-  warehouse_id String
-}
-model Maker{
+
+model Thumbnails {
   id         String   @id @default(uuid())
+  dest       String   @default("")
+  product    Product? @relation(fields: [product_id], references: [id])
+  product_id String?   @unique
+
+  created_at   DateTime      @default(now())
+  Machine_Part Machine_Part?
+  Maker        Maker?
+  Machine      Machine?
+  User         User?
+  Category     Category?
+}
+
+model Product {
+  id           String       @id @default(uuid())
+  name         String
+  created_at   DateTime     @default(now())
+  updated_at   DateTime     @updatedAt
+  price        Float        @default(0)
+  thumbs       Thumbnails[]
+  references   String
+  warehouse    Warehouse    @relation(fields: [warehouse_id], references: [id])
+  warehouse_id String
+  models        Car_Model[] 
+  category   Category   @relation(fields: [category_id], references: [id])
+  category_id String
+}
+
+model Maker {
+  id         String      @id @default(uuid())
   name       String
-  created_at DateTime @default(now())
-  image    Thumbnails?  @relation(fields: [image_id], references: [id])
-  image_id String  @unique
-  updated_at DateTime @updatedAt
-  Models Car_Model[]
-  References Reference[]
-
+  created_at DateTime    @default(now())
+  image      Thumbnails? @relation(fields: [image_id], references: [id])
+  image_id   String?      @unique 
+  updated_at DateTime    @updatedAt
+  Models     Car_Model[]
 }
-model Car_Model{
-  id        String   @id @default(uuid())
-  name      String
-  created_at DateTime @default(now())
-  maker Maker    @relation(fields: [maker_id], references: [id])
-  maker_id String
-  References Reference[]
 
+model Car_Model {
+  id         String      @id @default(uuid())
+  name       String
+  created_at DateTime    @default(now())
+  maker      Maker       @relation(fields: [maker_id], references: [id])
+  maker_id   String
+  Machine    Machine   @relation(fields: [machine_id], references: [id])
+  machine_id String
+  updated_at DateTime    @updatedAt
+  Products   Product[]
 }
-model Reference{
-  id    String   @id @default(uuid())
-  reference  String   @default("")
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+
+
+
+model Machine_Part {
+  id         String      @id @default(uuid())
+  name  String
+  image      Thumbnails? @relation(fields: [image_id], references: [id])
+  image_id   String?      @unique 
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+  machine    Machine     @relation(fields: [machine_id], references: [id])
+  machine_id String
+  bg_color   String
+  Categories Category[]
+}
+model Category{
+  id       String      @id @default(uuid())
+  name     String
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
   machine_part Machine_Part @relation(fields: [machine_part_id], references: [id])
   machine_part_id String
-  maker Maker @relation(fields: [maker_id], references: [id])
-  maker_id String
-  car_models Car_Model[] 
-  products Product[]
+  Thumbnail Thumbnails? @relation(fields: [thumbnail_id], references: [id])
+  thumbnail_id String? @unique 
+  Products Product[]
 }
-model Machine_Part{
-  id               String   @id @default(uuid())
-  reference        String
-  image    Thumbnails?  @relation(fields: [image_id], references: [id])
-  image_id String  @unique
-  created_at       DateTime @default(now())
-  updated_at       DateTime @updatedAt
-  machine  Machine  @relation(fields: [machine_id], references: [id])
-  machine_id String
-  references Reference[]
-
+model Machine {
+  id            String         @id @default(uuid())
+  name          String
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @updatedAt
+  image         Thumbnails?    @relation(fields: [image_id], references: [id])
+  image_id      String?        @unique 
+  machine_parts Machine_Part[]
+  models        Car_Model[]
 }
-model Machine{
-  id              String   @id @default(uuid())
-  name            String
-  created_at      DateTime @default(now())
-  updated_at      DateTime @updatedAt
-  image    Thumbnails?  @relation(fields: [image_id], references: [id])
-  image_id String  @unique
-  machine_parts   Machine_Part[]
-}
-
