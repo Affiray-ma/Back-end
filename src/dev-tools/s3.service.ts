@@ -34,7 +34,7 @@ export class S3Service {
         console.log(Location);
         return Location;
     }
-    async getFile(key:string) {
+    async getFile(key:string,size:number) {
         const paramsa : S3.GetObjectRequest = {
             Bucket: this.AWS_S3_BUCKET,
             Key:  key,
@@ -45,12 +45,17 @@ export class S3Service {
         // the uni8array is the image i want to open it get the content type and send it with the content type
         //const buffer = Buffer.from(Location.Body.toString());
 
-        
+        var resizedImage = Location.Body;
+        if (size){
+            resizedImage = await sharp(Location.Body as Buffer)
+      .resize(parseInt(size.toString()))
+      .toBuffer();
+        }
         // get the meme type
         
         //const data = await sharp(buffer).metadata();
         console.log(Location);
-        return Location;
+        return {Body : resizedImage,ContentType: Location.ContentType};
 
     }
 }
