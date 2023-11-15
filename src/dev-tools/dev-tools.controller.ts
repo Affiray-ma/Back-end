@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Res } from '@nestjs/common';
 import { DevToolsService } from './dev-tools.service';
 import { S3Service } from './s3.service';
 import { async } from 'rxjs';
@@ -45,7 +45,7 @@ export class DevToolsController {
     return result;
   }
   @Get("image")
-  async getImage(@Body() body: any,@Param('key') key,@Res() res: any) {
+  async getImage(@Body() body: any,@Query('key') key,@Res() res: any) {
 
     const result = await this.s3Service.getFile(key);
     //transform the image to binary and send it with content type image/png
