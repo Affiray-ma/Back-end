@@ -138,7 +138,7 @@ model Product {
   thumbs       Thumbnails[]
   references   String
   warehouse    Warehouse?    @relation(fields: [warehouse_id], references: [id])
-  warehouse_id String
+  warehouse_id String?
   models        Car_Model[] 
   category   Category   @relation(fields: [category_id], references: [id])
   category_id String
