@@ -102,4 +102,9 @@ export class DevToolsController {
     const result = await this.devToolsService.mok_products();
     return result;
   }
+  @Get("products")
+  async getProducts() {
+    const result = await this.devToolsService.getProducts();
+    return result;
+  }
 }
