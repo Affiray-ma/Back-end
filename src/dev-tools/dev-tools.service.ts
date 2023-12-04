@@ -159,4 +159,59 @@ export class DevToolsService {
         }
         return users;
     }
+
+    async mok_products() {
+        const products = [];
+        for (let index = 0; index < 10; index++) {
+            let random_categories = await this.prisma.category.findMany({
+               
+            })
+            let random_category = random_categories[Math.floor(Math.random() * random_categories.length)];
+            let models = await this.prisma.car_Model.findMany({})
+            let random_model = models[Math.floor(Math.random() * models.length)];
+            
+            let images = []
+            for (let index = 0; index < 5; index++) {
+                let image = await this.prisma.thumbnails.create({
+                   data:{
+                          dest: "product/" + faker.image.avatar(),              
+                   } 
+                })
+                images.push(image);
+
+
+            }
+            const product_created = await this.prisma.product.create({
+                data: {
+                    name: faker.commerce.productName(),
+                    description: faker.commerce.productDescription(),
+                    price: parseFloat(faker.commerce.price()),
+                    thumbs :{
+                        connect: images.map((image,index) => {
+                            if(index > 0){
+                                return {
+                                    id: image.id,                                    
+                                }
+                            }               
+                        })
+                    },
+                    default_thumb: images[0].id,
+                    category: {
+                        connect: {
+                            id: random_category.id
+                        }
+                    },
+                    models: {
+                        connect: {
+                            id: random_model.id
+                        }
+                    },
+                    references: faker.vehicle.vin(),
+                   
+                }
+            })
+            products.push({product_created,is_created: product_created ? true : false});
+        }
+        return products;
+    }
 }

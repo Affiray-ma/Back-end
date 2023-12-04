@@ -120,7 +120,7 @@ model Thumbnails {
   dest       String   @default("")
   product    Product? @relation(fields: [product_id], references: [id])
   product_id String?   @unique
-
+  is_dev    Boolean  @default(false)
   created_at   DateTime      @default(now())
   Machine_Part Machine_Part?
   Maker        Maker?
@@ -137,11 +137,13 @@ model Product {
   price        Float        @default(0)
   thumbs       Thumbnails[]
   references   String
-  warehouse    Warehouse    @relation(fields: [warehouse_id], references: [id])
+  warehouse    Warehouse?    @relation(fields: [warehouse_id], references: [id])
   warehouse_id String
   models        Car_Model[] 
   category   Category   @relation(fields: [category_id], references: [id])
   category_id String
+  description  String
+  default_thumb String @default("")
 }
 
 model Maker {

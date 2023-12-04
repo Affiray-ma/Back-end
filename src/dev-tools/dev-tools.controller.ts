@@ -96,4 +96,10 @@ export class DevToolsController {
     const result = await this.devToolsService.mok_users();
     return result;
   }
+
+  @Post("mok_products")
+  async mok_products() {
+    const result = await this.devToolsService.mok_products();
+    return result;
+  }
 }
