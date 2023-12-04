@@ -50,17 +50,25 @@
 
     "@adminjs/prisma": "^5.0.1",
 
+    "@faker-js/faker": "^8.3.1",
+
     "@nestjs/axios": "^3.0.0",
 
     "@nestjs/common": "^9.0.0",
 
     "@nestjs/core": "^9.0.0",
 
-    "@nestjs/passport": "^10.0.1",
+    "@nestjs/jwt": "^10.2.0",
+
+    "@nestjs/passport": "^10.0.2",
 
     "@nestjs/platform-express": "^9.0.0",
 
     "@prisma/client": "^5.1.1",
+
+    "@types/cookie-parser": "^1.4.6",
+
+    "@types/passport-jwt": "^3.0.13",
 
     "adminjs": "^7.3.0",
 
@@ -74,11 +82,17 @@
 
     "class-validator": "^0.14.0",
 
+    "cookie-parser": "^1.4.6",
+
     "express-formidable": "^1.2.0",
 
     "express-session": "^1.17.3",
 
+    "faker": "^6.6.6",
+
     "passport": "^0.6.0",
+
+    "passport-jwt": "^4.0.1",
 
     "passport-local": "^1.0.0",
 
@@ -102,13 +116,13 @@
 
     "@types/bcrypt": "^5.0.0",
 
-    "@types/express": "^4.17.13",
+    "@types/express": "^4.17.21",
 
     "@types/jest": "29.5.0",
 
     "@types/node": "18.15.11",
 
-    "@types/passport-local": "^1.0.35",
+    "@types/passport-local": "^1.0.38",
 
     "@types/supertest": "^2.0.11",
 

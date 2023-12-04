@@ -43,8 +43,8 @@ model User {
 model Userconfig {
   id          String   @id @default(uuid())
   user        User?    @relation()
-  currency    Currency @relation(fields: [currency_id], references: [id])
-  currency_id String   @unique
+  currency    Currency? @relation(fields: [currency_id], references: [id])
+  currency_id String   @default("")
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 }

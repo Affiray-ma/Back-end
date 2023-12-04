@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { S3Service } from './s3.service';
 import { PrismaClient } from '@prisma/client';
 import { HttpService } from '@nestjs/axios';
-
+import { faker } from '@faker-js/faker';
 import * as axios from 'axios';
 import { Observable, firstValueFrom } from 'rxjs';
-
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class DevToolsService {
     constructor(private readonly s3Service: S3Service,
@@ -128,5 +128,35 @@ export class DevToolsService {
         // await this.prisma.machine_Part.deleteMany({})
         await this.prisma.maker.deleteMany({})
 
+    }
+
+    async mok_users() {
+        const users = [];
+        for (let index = 0; index < 10; index++) {
+            const email = faker.internet.email();
+            const user = {
+                email: email,
+                phone: faker.phone.number(),
+                password: await bcrypt.hash(email, 10),
+                name: faker.person.firstName(),
+                birth_date: '1999-01-01',
+                customer_rank :1,
+            }
+
+            const user_created = await this.prisma.user.create({
+                data: {
+                    ...user,
+                    
+                    image: {
+                        create: {
+                            dest: faker.image.avatar(),
+                            
+                        }
+                    }
+                }
+            })
+            users.push({user,is_created: user_created ? true : false});
+        }
+        return users;
     }
 }

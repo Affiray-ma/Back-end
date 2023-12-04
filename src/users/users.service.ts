@@ -48,4 +48,23 @@ export class UsersService {
         
         
     }
+
+    async getUsers(){
+        const users = await this.prisma.user.findMany({
+            include: {
+                image: true,
+                
+            },
+           
+            
+        })
+        return users;
+    }
+
+    async deleteUser(id: string){
+        const user = await this.prisma.user.deleteMany({
+            
+        })
+        return user;
+    }
 }

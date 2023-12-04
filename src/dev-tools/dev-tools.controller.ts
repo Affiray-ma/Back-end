@@ -90,4 +90,10 @@ export class DevToolsController {
     const result = await this.devToolsService.deleteAll();
     return result;
   }
+
+  @Get("mok_users")
+  async mok_users() {
+    const result = await this.devToolsService.mok_users();
+    return result;
+  }
 }

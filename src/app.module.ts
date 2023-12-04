@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+
 let PrismaAdapter = null;
 
 import { DMMFClass } from '@prisma/client/runtime/library'
@@ -115,6 +116,7 @@ const authenticate = async (email: string, password: string) => {
         },
       }),
     })}),
+    
   ],
   controllers: [AppController],
   providers: [AppService],
