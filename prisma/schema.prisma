@@ -41,12 +41,12 @@ model User {
 }
 
 model Userconfig {
-  id          String   @id @default(uuid())
-  user        User?    @relation()
+  id          String    @id @default(uuid())
+  user        User?     @relation()
   currency    Currency? @relation(fields: [currency_id], references: [id])
-  currency_id String   @default("")
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  currency_id String    @default("")
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
 }
 
 model Currency {
@@ -116,11 +116,11 @@ model Search {
 }
 
 model Thumbnails {
-  id         String   @id @default(uuid())
-  dest       String   @default("")
-  product    Product? @relation(fields: [product_id], references: [id])
-  product_id String?   @unique
-  is_dev    Boolean  @default(false)
+  id           String        @id @default(uuid())
+  dest         String        @default("")
+  product      Product?      @relation(fields: [product_id], references: [id])
+  product_id   String?
+  is_dev       Boolean       @default(false)
   created_at   DateTime      @default(now())
   Machine_Part Machine_Part?
   Maker        Maker?
@@ -130,20 +130,20 @@ model Thumbnails {
 }
 
 model Product {
-  id           String       @id @default(uuid())
-  name         String
-  created_at   DateTime     @default(now())
-  updated_at   DateTime     @updatedAt
-  price        Float        @default(0)
-  thumbs       Thumbnails[]
-  references   String
-  warehouse    Warehouse?    @relation(fields: [warehouse_id], references: [id])
-  warehouse_id String?
-  models        Car_Model[] 
-  category   Category   @relation(fields: [category_id], references: [id])
-  category_id String
-  description  String
-  default_thumb String @default("")
+  id            String       @id @default(uuid())
+  name          String
+  created_at    DateTime     @default(now())
+  updated_at    DateTime     @updatedAt
+  price         Float        @default(0)
+  thumbs        Thumbnails[]
+  references    String
+  warehouse     Warehouse?   @relation(fields: [warehouse_id], references: [id])
+  warehouse_id  String?
+  models        Car_Model[]
+  category      Category     @relation(fields: [category_id], references: [id])
+  category_id   String
+  description   String
+  default_thumb String       @default("")
 }
 
 model Maker {
@@ -151,30 +151,28 @@ model Maker {
   name       String
   created_at DateTime    @default(now())
   image      Thumbnails? @relation(fields: [image_id], references: [id])
-  image_id   String?      @unique 
+  image_id   String?     @unique
   updated_at DateTime    @updatedAt
   Models     Car_Model[]
 }
 
 model Car_Model {
-  id         String      @id @default(uuid())
+  id         String    @id @default(uuid())
   name       String
-  created_at DateTime    @default(now())
-  maker      Maker       @relation(fields: [maker_id], references: [id])
+  created_at DateTime  @default(now())
+  maker      Maker     @relation(fields: [maker_id], references: [id])
   maker_id   String
   Machine    Machine   @relation(fields: [machine_id], references: [id])
   machine_id String
-  updated_at DateTime    @updatedAt
+  updated_at DateTime  @updatedAt
   Products   Product[]
 }
 
-
-
 model Machine_Part {
   id         String      @id @default(uuid())
-  name  String
+  name       String
   image      Thumbnails? @relation(fields: [image_id], references: [id])
-  image_id   String?      @unique 
+  image_id   String?     @unique
   created_at DateTime    @default(now())
   updated_at DateTime    @updatedAt
   machine    Machine     @relation(fields: [machine_id], references: [id])
@@ -182,24 +180,26 @@ model Machine_Part {
   bg_color   String
   Categories Category[]
 }
-model Category{
-  id       String      @id @default(uuid())
-  name     String
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  machine_part Machine_Part @relation(fields: [machine_part_id], references: [id])
+
+model Category {
+  id              String       @id @default(uuid())
+  name            String
+  created_at      DateTime     @default(now())
+  updated_at      DateTime     @updatedAt
+  machine_part    Machine_Part @relation(fields: [machine_part_id], references: [id])
   machine_part_id String
-  Thumbnail Thumbnails? @relation(fields: [thumbnail_id], references: [id])
-  thumbnail_id String? @unique 
-  Products Product[]
+  Thumbnail       Thumbnails?  @relation(fields: [thumbnail_id], references: [id])
+  thumbnail_id    String?      @unique
+  Products        Product[]
 }
+
 model Machine {
   id            String         @id @default(uuid())
   name          String
   created_at    DateTime       @default(now())
   updated_at    DateTime       @updatedAt
   image         Thumbnails?    @relation(fields: [image_id], references: [id])
-  image_id      String?        @unique 
+  image_id      String?        @unique
   machine_parts Machine_Part[]
   models        Car_Model[]
 }
