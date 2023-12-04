@@ -6,6 +6,7 @@ import { faker } from '@faker-js/faker';
 import * as axios from 'axios';
 import { Observable, firstValueFrom } from 'rxjs';
 import * as bcrypt from 'bcrypt';
+import sharp from 'sharp';
 @Injectable()
 export class DevToolsService {
     constructor(private readonly s3Service: S3Service,
@@ -217,11 +218,35 @@ export class DevToolsService {
     async getProducts(){
         const products = await this.prisma.product.findMany({
         })
-        let ret = []
+        const ret = []
+        for (let index = 0; index < products.length; index++) {
+            const product = products[index];
+            const thumbs = await this.prisma.thumbnails.findUnique({
+                where: {
+                    id : products[index].default_thumb
+                }
+            })
+            
+            products[index].default_thumb = thumbs.dest;
+        }
         //i need to get the default thumb of the product and encode it to base64
         
         
         
-        return ret;
+        return products;
+    }
+    async get_external_image(url: string,size: number) {
+        
+        
+        //rmove all characters before http
+        const key = "http" + url.split("http")[1];
+        const response = await firstValueFrom(this.httpService.get(key, { responseType: 'arraybuffer' }));
+        //resize the image if the size is not null
+        if(size){
+            const buffer = await sharp(response.data as Buffer)
+            .resize(parseInt(size.toString()))
+            .toBuffer();
+        }
+        return {Body: response.data,ContentType: response.headers['content-type']};
     }
 }

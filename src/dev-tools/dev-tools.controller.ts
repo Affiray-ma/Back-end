@@ -46,7 +46,9 @@ export class DevToolsController {
   }
   @Get("image")
   async getImage(@Body() body: any,@Query('key') key:string,@Query("s")size : number,@Res() res: any) {
-    
+    //check if the key has http or https
+    const is_local = key.includes("http");
+    if(!is_local){
     const result = await this.s3Service.getFile(key,size);
     //transform the image to binary and send it with content type image/png
     // res.writeHead(200, {
@@ -57,7 +59,14 @@ export class DevToolsController {
     });
     //set the contenst type to the image type
     res.end(result.Body);
+  }else{
+    const result = await this.devToolsService.get_external_image(key,size);
+    res.writeHead(200, {
+      'Content-Type': result.ContentType,
    
+    })
+    res.end(result.Body);
+  }
     //return result;
   }
   @Post("maker")
