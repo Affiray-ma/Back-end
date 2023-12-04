@@ -217,19 +217,11 @@ export class DevToolsService {
     async getProducts(){
         const products = await this.prisma.product.findMany({
         })
+        let ret = []
         //i need to get the default thumb of the product and encode it to base64
-        products.forEach(async (product) => {
-            const thumb = await this.prisma.thumbnails.findUnique({
-                where: {
-                    id: product.default_thumb
-                }
-            })
-            //remove the first "product/" from the dest
-            thumb.dest = thumb.dest.replace("product/","");
-            const image = await axios.default.get(thumb.dest, { responseType: 'arraybuffer' })
-            const buffer  = Buffer.from(image.data,'binary');
-            product.default_thumb = buffer.toString('base64');
-        })
-        return products;
+        
+        
+        
+        return ret;
     }
 }
