@@ -24,7 +24,7 @@ export class AuthService {
           }
         
     }
-    async brew services start mongodb-communityauthenticateUser(login: string, password: string) {
+    async authenticateUser(login: string, password: string) {
         //check if the login is mobile or email
         const user = await this.getUserByLogin(login);
         if(!user){
